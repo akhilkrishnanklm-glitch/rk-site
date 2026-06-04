@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60" fill="none">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F52BA" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B35" />
+      <stop offset="100%" stop-color="#E0531A" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Logo Mark -->
+  <g transform="translate(10, 8)" filter="url(#shadow)">
+    <!-- Notebook Back -->
+    <rect x="2" y="6" width="30" height="36" rx="4" fill="url(#blueGrad)" />
+    <!-- Notebook Page (White/Cream overlay) -->
+    <rect x="6" y="8" width="24" height="32" rx="2" fill="#F8FAFC" />
+    <!-- Page lines -->
+    <line x1="10" y1="15" x2="24" y2="15" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" />
+    <line x1="10" y1="21" x2="24" y2="21" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" />
+    <line x1="10" y1="27" x2="20" y2="27" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Pen Tool (Crossing over) -->
+    <g transform="rotate(15, 25, 20)">
+      <!-- Pen body -->
+      <path d="M26,10 L30,10 L30,34 L26,34 Z" fill="url(#orangeGrad)" />
+      <!-- Pen cap/clip -->
+      <path d="M25,8 L31,8 L31,16 L25,16 Z" fill="url(#orangeGrad)" />
+      <!-- Pen tip (nib) -->
+      <path d="M26,34 L28,40 L30,34 Z" fill="#475569" />
+      <!-- Pen clip detail -->
+      <rect x="29" y="10" width="2" height="12" rx="1" fill="#F8FAFC" opacity="0.8" />
+    </g>
+  </g>
+
+  <!-- Brand Typography -->
+  <text x="58" y="32" font-family="'Outfit', 'Inter', 'Segoe UI', sans-serif" font-weight="800" font-size="22" fill="#0F172A" letter-spacing="1">RK</text>
+  <text x="94" y="32" font-family="'Outfit', 'Inter', 'Segoe UI', sans-serif" font-weight="800" font-size="22" fill="#FF6B35" letter-spacing="1">TRADERS</text>
+  
+  <!-- Tagline / Subtitle -->
+  <text x="58" y="47" font-family="'Inter', 'Segoe UI', sans-serif" font-weight="600" font-size="8.5" fill="#64748B" letter-spacing="1.2">STATIONERY &amp; SUPPLIES</text>
+</svg>
