@@ -464,18 +464,35 @@ function initContactForm() {
       return;
     }
 
-    // Animate mock submitting state
+    // Disable submit button during submission
     submitBtn.disabled = true;
     submitBtn.innerText = 'Sending Message...';
-    
-    // Simulate API delivery delay
-    setTimeout(() => {
+
+    // Submit to Google Form
+    const formData = new FormData(form);
+    const searchParams = new URLSearchParams(formData);
+
+    fetch('https://docs.google.com/forms/u/0/d/e/1FAIpQLScEggd7AWnjC8w3CMh6Vk1xHXOgVvEns_ow5QwkyyNoHrUkjg/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: searchParams
+    })
+    .then(() => {
       // Hide form elements cleanly
       form.style.display = 'none';
       document.getElementById('form-heading').style.display = 'none';
       
       // Reveal success dialog box
       successBox.style.display = 'block';
-    }, 1200);
+    })
+    .catch((error) => {
+      console.error('Form submission error:', error);
+      alert('There was an issue sending your message. Please try again or reach out to us via WhatsApp/phone.');
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Send Message';
+    });
   });
 }
