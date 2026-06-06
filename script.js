@@ -5,9 +5,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initMobileMenu();
+  initScrollObserver();
   initProducts();
   initScrollEffects();
   initContactForm();
+  initLightbox();
+  initCountUp();
+  initScrollReveals();
+  initReviewsCarousel();
+  initHeroParallax();
 });
 
 /* ==========================================================================
@@ -67,125 +73,234 @@ function initMobileMenu() {
    PRODUCTS CATALOG LOGIC (FILTER & SEARCH)
    ========================================================================== */
 const PRODUCTS_DATA = [
+  // Notebooks
   {
     id: 1,
     name: "Classmate A4 Notebook (200 Pages)",
     category: "notebooks",
     price: "₹65",
-    description: "Premium single-line notebook with smooth paper. Perfect for college lectures and record maintenance.",
-    tag: "Bestseller"
+    description: "Premium single-line notebook with smooth, eco-friendly paper. Perfect for college lectures and record maintenance.",
+    tag: "Bestseller",
+    image: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=500&q=80"
   },
   {
     id: 2,
-    name: "Parker Vector Matte Black Ball Pen",
-    category: "writing",
-    price: "₹250",
-    description: "Elegant professional pen with a smooth ink flow. Includes executive presentation case.",
-    tag: "Premium"
-  },
-  {
-    id: 3,
-    name: "Casio fx-991EX ClassWiz Calculator",
-    category: "electronics",
-    price: "₹1,495",
-    description: "Advanced scientific calculator featuring 552 functions. Essential for engineering and science majors.",
-    tag: "Essential"
-  },
-  {
-    id: 4,
-    name: "Omega Mini Drafter (Professional Grade)",
-    category: "engineering",
-    price: "₹450",
-    description: "Premium mechanical mini-drafter with horizontal and vertical scales. Highly durable rods and clamps.",
-    tag: "TKM Special"
-  },
-  {
-    id: 5,
-    name: "Faber-Castell Artist Brush Pens (12 Colors)",
-    category: "art",
-    price: "₹380",
-    description: "Flexible brush tips for fine sketching, calligraphy, and watercolor effects. Vibrant ink shades.",
-    tag: "Art Special"
-  },
-  {
-    id: 6,
-    name: "Solo A4 Ring Binder File",
-    category: "office",
-    price: "₹120",
-    description: "Heavy-duty ring binder file for reports, project paperwork, and office document archiving.",
-    tag: "Office"
-  },
-  {
-    id: 7,
-    name: "80cm Hardwood T-Square Ruler",
-    category: "engineering",
-    price: "₹320",
-    description: "Polished wood architectural T-square with transparent acrylic edges for clean draft lines.",
-    tag: "Architecture"
-  },
-  {
-    id: 8,
-    name: "Camel Acrylic Colors (12 Shades Set)",
-    category: "art",
-    price: "₹280",
-    description: "Rich, fast-drying pigment paint. Perfect for canvases, craft projects, and exhibition charts.",
-    tag: "Creative"
-  },
-  {
-    id: 9,
-    name: "Casio fx-82MS Scientific Calculator",
-    category: "electronics",
-    price: "₹695",
-    description: "Standard 240-function 2-line scientific calculator. Approved for board examinations and school tests.",
-    tag: "Student Fav"
-  },
-  {
-    id: 10,
-    name: "Solo Transparent Project Report Files (5 Pack)",
-    category: "office",
-    price: "₹90",
-    description: "Clear report covers with color sidebars. Ideal for engineering, architecture, or school project reports.",
-    tag: "Bulk Deal"
-  },
-  {
-    id: 11,
-    name: "Skybags Collegiate Backpack (32L)",
-    category: "school",
-    price: "₹1,299",
-    description: "High-grade polyester backpack with 3 large compartments and a dedicated water bottle mesh pocket.",
-    tag: "New In"
-  },
-  {
-    id: 12,
-    name: "Cello H2O Stainless Steel Water Bottle (1L)",
-    category: "school",
-    price: "₹290",
-    description: "Ergonomic leak-proof, food-grade stainless steel bottle to keep your drinks cool in the Kerala heat.",
-    tag: "Essential"
-  },
-  {
-    id: 13,
     name: "Classmate Practical Record Book",
     category: "notebooks",
     price: "₹85",
-    description: "Prescribed A4 size record book with alternate ruled and plain sheets for lab sketches and tables.",
-    tag: "Bestseller"
+    description: "Prescribed A4 size record book with alternate ruled and plain sheets for lab sketches, diagrams, and tables.",
+    tag: "Bestseller",
+    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=500&q=80"
   },
   {
-    id: 14,
-    name: "Rotring Isograph Technical Pen (0.3mm)",
+    id: 3,
+    name: "Premium Spiral Bound Notepad A5",
+    category: "notebooks",
+    price: "₹110",
+    description: "Hardcover micro-perforated spiral notebook. Ideal for quick engineering calculations and project diaries.",
+    tag: "Student Fav",
+    image: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=500&q=80"
+  },
+
+  // Writing
+  {
+    id: 4,
+    name: "Parker Vector Matte Black Ball Pen",
+    category: "writing",
+    price: "₹250",
+    description: "Elegant professional pen with a smooth ink flow. Features executive matte finish and stainless steel clip.",
+    tag: "Premium",
+    image: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 5,
+    name: "Rotring Tikky Mechanical Pencil 0.5mm",
+    category: "writing",
+    price: "₹180",
+    description: "High-precision mechanical pencil with triangular barrel for drawing and comfortable sketching. Ideal for drafting.",
+    tag: "Precision",
+    image: "https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 6,
+    name: "Uniball Eye UB-150 Gel Pens (Pack of 3)",
+    category: "writing",
+    price: "₹210",
+    description: "Super long-lasting waterproof fade-proof liquid gel pens. Standard choice for college writing.",
+    tag: "Essential",
+    image: "https://images.unsplash.com/photo-1585336139080-b019d0b2d3dd?auto=format&fit=crop&w=500&q=80"
+  },
+
+  // Electronics
+  {
+    id: 7,
+    name: "Casio fx-991EX ClassWiz Calculator",
+    category: "electronics",
+    price: "₹1,495",
+    description: "Advanced scientific calculator featuring 552 functions, spreadsheets, and matrix solvers. Essential for TKM Engineering students.",
+    tag: "TKM Special",
+    image: "https://images.unsplash.com/photo-1574634534894-89d7576c8259?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 8,
+    name: "Casio fx-82MS Scientific Calculator",
+    category: "electronics",
+    price: "₹695",
+    description: "Standard 240-function 2-line scientific calculator. Approved for university and school board examinations.",
+    tag: "Student Fav",
+    image: "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?auto=format&fit=crop&w=500&q=80"
+  },
+
+  // Engineering & Architecture
+  {
+    id: 9,
+    name: "Omega Mini Drafter (Professional)",
+    category: "engineering",
+    price: "₹450",
+    description: "Premium mechanical mini-drafter with horizontal and vertical scales. Built with heavy-duty metal clamps.",
+    tag: "TKM Special",
+    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 10,
+    name: "Imperial Wooden Drawing Board (A1)",
+    category: "engineering",
+    price: "₹650",
+    description: "Crafted seasoned pine wood board with ebony edge. Perfect companion for engineering drawing classes.",
+    tag: "Essential",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 11,
+    name: "Rotring Isograph Technical Pen 0.3mm",
     category: "engineering",
     price: "₹1,850",
-    description: "High-precision chrome-plated architectural drawing pen. Refillable ink system for professional drafts.",
-    tag: "Architecture"
+    description: "High-precision chrome-plated architectural drawing pen. Refillable ink system for professional blueprint sketches.",
+    tag: "Premium",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 12,
+    name: "Staedtler Geometry Compass Set",
+    category: "engineering",
+    price: "₹550",
+    description: "Precision drafting compass set in a secure storage case. Includes extensions, adapters, and replacement leads.",
+    tag: "Precision",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 13,
+    name: "80cm Hardwood T-Square Ruler",
+    category: "engineering",
+    price: "₹320",
+    description: "Polished wood architectural T-square with transparent acrylic edges for drafting layout guidelines.",
+    tag: "Architecture",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=500&q=80"
+  },
+
+  // Art & Craft
+  {
+    id: 14,
+    name: "Faber-Castell Artist Brush Pens (12 Colors)",
+    category: "art",
+    price: "₹380",
+    description: "Flexible brush tips for fine sketching, calligraphy, and watercolor painting. Features rich, vibrant colors.",
+    tag: "Art Special",
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=500&q=80"
   },
   {
     id: 15,
-    name: "Staedtler Precision Geometry Compass Set",
-    category: "writing",
-    price: "₹550",
-    description: "Solid metal quick-adjust compass with spare lead parts, dividers, and ruler scales in a hard travel case.",
-    tag: "Premium"
+    name: "Camel Acrylic Colors Set (12 Shades)",
+    category: "art",
+    price: "₹280",
+    description: "Rich, fast-drying non-toxic pigments. Suitable for canvas paintings, woodwork, and architecture models.",
+    tag: "Creative",
+    image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 16,
+    name: "Self-Healing Cutting Mat (A2)",
+    category: "art",
+    price: "₹420",
+    description: "Durable self-healing cutting board with grid guidelines. Essential for architecture model building.",
+    tag: "Architecture",
+    image: "https://images.unsplash.com/photo-1572945281861-68b1a3d3c8c7?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 17,
+    name: "Architecture Foam Boards (5 Pack)",
+    category: "art",
+    price: "₹250",
+    description: "Lightweight, sturdy white foam boards. Ideal for architectural model making and mock-up presentations.",
+    tag: "Architecture",
+    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=500&q=80"
+  },
+
+  // Office Files & Stationery
+  {
+    id: 18,
+    name: "Solo A4 Ring Binder File",
+    category: "office",
+    price: "₹120",
+    description: "Heavy-duty ring binder file with index sheets. Perfect for archiving project documents and corporate reports.",
+    tag: "Office",
+    image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 19,
+    name: "Kangaro Heavy Duty Stapler (HD-45)",
+    category: "office",
+    price: "₹190",
+    description: "All-metal construction stapler with quick loading. Staples up to 30 sheets of printer paper easily.",
+    tag: "Office",
+    image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 20,
+    name: "JK Copier A4 Printer Paper (75GSM, Ream)",
+    category: "office",
+    price: "₹340",
+    description: "High-brightness photocopying paper. Jam-free printing performance for office laser printers.",
+    tag: "Bulk Deal",
+    image: "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=500&q=80"
+  },
+
+  // School Bags & Bottles
+  {
+    id: 22,
+    name: "Cello H2O Stainless Steel Bottle (1L)",
+    category: "school",
+    price: "₹290",
+    description: "Insulated food-grade leak-proof stainless steel bottle. Keeps water cool during hot college days.",
+    tag: "Essential",
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 23,
+    name: "Milton Insulated Lunch Box",
+    category: "school",
+    price: "₹380",
+    description: "Topseller leakproof lunchbox container with stainless steel inner bowl. Keeps food fresh and hot.",
+    tag: "Essential",
+    image: "https://images.unsplash.com/photo-1590069261209-f8e9b8642343?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 24,
+    name: "A3 Tracing Paper Roll (50m)",
+    category: "engineering",
+    price: "₹450",
+    description: "Ultra-transparent, heavy-weight tracing paper roll. Smooth surface for architecture overlay drawings and blueprint copies.",
+    tag: "Architecture",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80"
+  },
+  {
+    id: 25,
+    name: "Professional Set Squares Set (30/60 & 45)",
+    category: "engineering",
+    price: "₹280",
+    description: "Thick, durable transparent acrylic set squares with bevelled edges. Features high-accuracy centimeter and angle markings.",
+    tag: "TKM Special",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=500&q=80"
   }
 ];
 
@@ -306,30 +421,27 @@ function initProducts() {
     } else {
       emptyState.style.display = 'none';
 
-      filtered.forEach(prod => {
+      filtered.forEach((prod, index) => {
         const card = document.createElement('article');
-        card.className = 'product-card';
+        card.className = 'product-card scroll-reveal-up';
         card.setAttribute('data-id', prod.id);
+        
+        // Dynamic animation stagger
+        const staggerIndex = index % 4;
+        card.style.transitionDelay = `${staggerIndex * 0.08}s`;
 
         const badgeHTML = prod.tag ? `<span class="product-tag">${prod.tag}</span>` : '';
-        const iconSVG = CATEGORY_ICONS[prod.category] || CATEGORY_ICONS['office'];
 
         card.innerHTML = `
           <div class="product-image-container">
             ${badgeHTML}
-            <div class="product-image" style="color: var(--primary-color); width: 60px; height: 60px;">
-              ${iconSVG}
-            </div>
+            <img src="${prod.image}" alt="${prod.name}" class="product-image" loading="lazy">
           </div>
           <div class="product-info">
             <span class="product-category">${prod.category}</span>
             <h3 class="product-name">${prod.name}</h3>
             <p class="product-desc">${prod.description}</p>
-            <div class="product-footer">
-              <div>
-                <span class="product-price-label">Price</span>
-                <span class="product-price">${prod.price}</span>
-              </div>
+            <div class="product-footer" style="justify-content: flex-end; border-top: none; padding-top: 0;">
               <button class="product-btn" aria-label="Inquire about ${prod.name}" onclick="inquireProduct('${prod.name}')">
                 <svg viewBox="0 0 24 24">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
@@ -339,6 +451,9 @@ function initProducts() {
           </div>
         `;
         grid.insertBefore(card, emptyState);
+        if (window.scrollObserver) {
+          window.scrollObserver.observe(card);
+        }
       });
     }
   }
@@ -494,5 +609,211 @@ function initContactForm() {
       submitBtn.disabled = false;
       submitBtn.innerText = 'Send Message';
     });
+  });
+}
+
+/* ==========================================================================
+   SCROLL REVEAL OBSERVER & SETUP
+   ========================================================================== */
+function initScrollObserver() {
+  window.scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal');
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+}
+
+function initScrollReveals() {
+  const revealElements = document.querySelectorAll(
+    '.scroll-reveal-up, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-fade'
+  );
+  revealElements.forEach(el => {
+    if (window.scrollObserver) {
+      window.scrollObserver.observe(el);
+    }
+  });
+}
+
+/* ==========================================================================
+   DYNAMIC NUMBER COUNT-UP ANIMATION
+   ========================================================================== */
+function initCountUp() {
+  const counters = document.querySelectorAll('.count-up');
+  
+  const animateCounter = (counter) => {
+    const target = parseInt(counter.getAttribute('data-target'), 10);
+    const duration = 1600; // ms
+    const startTime = performance.now();
+    
+    const update = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing out cubic: easeOutCubic
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      
+      const currentValue = Math.floor(easeProgress * target);
+      counter.innerText = currentValue;
+      
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        counter.innerText = target;
+      }
+    };
+    
+    requestAnimationFrame(update);
+  };
+  
+  const statsObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        obs.unobserve(entry.target); // Count only once
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  counters.forEach(counter => statsObserver.observe(counter));
+}
+
+/* ==========================================================================
+   GALLERY LIGHTBOX TRIGGER & CONTROLS
+   ========================================================================== */
+function initLightbox() {
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+  
+  if (!lightbox || !galleryItems.length) return;
+  
+  let currentIndex = 0;
+  const imagesList = Array.from(galleryItems).map(item => ({
+    src: item.getAttribute('data-src'),
+    caption: item.querySelector('.gallery-info h3').innerText
+  }));
+  
+  function showImage(index) {
+    if (index < 0) index = imagesList.length - 1;
+    if (index >= imagesList.length) index = 0;
+    currentIndex = index;
+    lightboxImg.src = imagesList[currentIndex].src;
+    lightboxCaption.innerText = imagesList[currentIndex].caption;
+  }
+  
+  galleryItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      showImage(index);
+      lightbox.classList.add('active');
+    });
+  });
+  
+  closeBtn.addEventListener('click', () => {
+    lightbox.classList.remove('active');
+  });
+  
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showImage(currentIndex - 1);
+  });
+  
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showImage(currentIndex + 1);
+  });
+  
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.remove('active');
+    }
+  });
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') lightbox.classList.remove('active');
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+  });
+}
+
+/* ==========================================================================
+   REVIEWS TESTIMONIAL SLIDER CAROUSEL LOGIC
+   ========================================================================== */
+function initReviewsCarousel() {
+  const track = document.getElementById('reviews-track');
+  const container = document.querySelector('.reviews-carousel-container');
+  if (!track || !container) return;
+  
+  const cards = Array.from(track.children);
+  let index = 0;
+  let intervalId = null;
+  
+  function getCardsPerView() {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 1024) return 2;
+    return 3;
+  }
+  
+  function slide() {
+    const cardsPerView = getCardsPerView();
+    const maxIndex = cards.length - cardsPerView;
+    if (index > maxIndex) {
+      index = 0;
+    }
+    
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    const gap = 24; // matching styles.css gap
+    const amountToMove = (cardWidth + gap) * index;
+    
+    track.style.transform = `translateX(-${amountToMove}px)`;
+  }
+  
+  function startAutoSlide() {
+    intervalId = setInterval(() => {
+      const cardsPerView = getCardsPerView();
+      const maxIndex = cards.length - cardsPerView;
+      index = index >= maxIndex ? 0 : index + 1;
+      slide();
+    }, 4000);
+  }
+  
+  function stopAutoSlide() {
+    if (intervalId) clearInterval(intervalId);
+  }
+  
+  // Start slider
+  startAutoSlide();
+  
+  // Pause slider on hover
+  container.addEventListener('mouseenter', stopAutoSlide);
+  container.addEventListener('mouseleave', startAutoSlide);
+  
+  // Handle resize window
+  window.addEventListener('resize', () => {
+    slide();
+  });
+}
+
+/* ==========================================================================
+   HERO BANNER PARALLAX SCROLLING
+   ========================================================================== */
+function initHeroParallax() {
+  const parallaxImg = document.querySelector('.parallax-img');
+  if (!parallaxImg) return;
+  
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY;
+    // Limit translation offset to keep it subtle and elegant
+    if (scrollPos < 800) {
+      const yOffset = scrollPos * 0.15;
+      parallaxImg.style.transform = `translateY(${yOffset}px)`;
+    }
   });
 }
